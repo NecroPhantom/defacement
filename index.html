@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>archqu4k</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: #1a1a1a;
+      font-family: 'Press Start 2P', monospace;
+      overflow: hidden;
+      color: #ff3c00;
+      user-select: none;
+      cursor: pointer;
+    }
+    #video-container {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      visibility: hidden;
+      overflow: hidden;
+    }
+    #intro-video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;  /* fullscreen cover */
+      cursor: none;
+    }
+    #deface {
+      display: none;
+      height: 100vh; width: 100vw;
+      flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 20px;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      cursor: default;
+    }
+    #deface.visible {
+      opacity: 1;
+    }
+    h1 {
+      font-size: 5rem;
+      color: #ff3c00;
+      text-shadow:
+        3px 3px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+      margin: 0 0 40px 0;
+      user-select: none;
+    }
+    .socials {
+      display: flex; gap: 40px; font-size: 1.2rem;
+      text-shadow:
+        1px 1px 0 #000,
+        -1px -1px 0 #000;
+    }
+    .socials a {
+      color: #ff3c00;
+      text-decoration: none;
+      border: 2px solid #ff3c00;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: background-color 0.2s, color 0.2s;
+      user-select: text;
+    }
+    .socials a:hover {
+      background-color: #ff3c00;
+      color: #1a1a1a;
+      cursor: pointer;
+    }
+    body::before {
+      content: "";
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(0,0,0,0.05) 50%, transparent 50%) 0 0 / 100% 4px repeat;
+      z-index: 1000;
+    }
+    #click-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 10000;
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="click-overlay" title="Click anywhere to start"></div>
+
+  <div id="video-container">
+    <video id="intro-video" playsinline>
+      <source src="video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div id="deface">
+    <h1>archqu4k</h1>
+    <div class="socials">
+      <a href="https://ur4.xyz" target="_blank" rel="noopener noreferrer">ur4.xyz</a>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">Twitter</a>
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+
+  <script>
+    const clickOverlay = document.getElementById('click-overlay');
+    const videoContainer = document.getElementById('video-container');
+    const video = document.getElementById('intro-video');
+    const deface = document.getElementById('deface');
+
+    clickOverlay.addEventListener('click', () => {
+      clickOverlay.style.display = 'none';
+      videoContainer.style.visibility = 'visible';
+      video.muted = false;
+      video.play().catch(() => {
+        video.muted = true;
+        video.play();
+      });
+    });
+
+    video.addEventListener('ended', () => {
+      videoContainer.style.visibility = 'hidden';
+      deface.style.display = 'flex';
+      setTimeout(() => deface.classList.add('visible'), 50);
+    });
+  </script>
+</body>
+</html>
